@@ -3,6 +3,7 @@ package hyuk.techblog.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,7 +39,13 @@ public class BlogPost {
 
 	private int readCount;
 
-	@OneToMany(mappedBy = "blogPost")
+	@OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL)
 	private List<BlogPostCategory> blogPostCategories = new ArrayList<>();
+
+	/* 연관관계 편의 메서드 */
+	public void addCategory(BlogPostCategory blogPostCategory) {
+		blogPostCategories.add(blogPostCategory);
+		blogPostCategory.setBlogPost(this);
+	}
 
 }

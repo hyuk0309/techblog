@@ -28,4 +28,7 @@ public class BlogPostCategory {
 	@JoinColumn(name = "category_id", nullable = false)
 	private Category category;
 
+	protected void setBlogPost(BlogPost blogPost) {
+		this.blogPost = blogPost;
+	}
 }
