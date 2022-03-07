@@ -34,6 +34,17 @@ public class Member {
 	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
 	private List<Category> categories = new ArrayList<>();
 
+	protected Member(){
+	}
+
+	public static Member createMember(String loginId, String password, String nickName) {
+		Member member = new Member();
+		member.loginId = loginId;
+		member.password = password;
+		member.nickName = nickName;
+		return member;
+	}
+
 	/* 연관관계 편의 메서드 */
 	public void addCategory(Category category) {
 		categories.add(category);
