@@ -27,4 +27,7 @@ public class Category {
 	@Column(nullable = false)
 	private String name;
 
+	protected void setMember(Member member) {
+		this.member = member;
+	}
 }
