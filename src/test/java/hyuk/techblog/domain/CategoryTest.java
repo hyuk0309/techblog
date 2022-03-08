@@ -31,7 +31,20 @@ class CategoryTest {
 		em.clear();
 
 		//then
-		Assertions.assertNotNull(category.getId());
+		assertNotNull(category.getId());
+	}
+
+	@Test
+	void testCreateCategory() {
+		//given
+		Member member = Member.createMember("testId", "testPw", "testName");
+
+		//when
+		Category category = Category.createCategory(member, "backend");
+
+		//then
+		assertEquals(member, category.getMember());
+		assertEquals(category, member.getCategories().get(0));
 	}
 
 
