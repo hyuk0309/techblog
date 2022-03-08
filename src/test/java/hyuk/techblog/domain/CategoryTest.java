@@ -20,11 +20,11 @@ class CategoryTest {
 		Member member = Member.createMember("testId", "testPw", "testName");
 		em.persist(member);
 
-		Category category = Category.createCategory("backend");
+		String categoryName = "backend";
 
 		//when
 		Member findMember = em.find(Member.class, member.getId());
-		findMember.addCategory(category);
+		Category category = Category.createCategory(findMember, categoryName);
 		em.persist(category);
 
 		em.flush();
@@ -33,5 +33,6 @@ class CategoryTest {
 		//then
 		Assertions.assertNotNull(category.getId());
 	}
+
 
 }

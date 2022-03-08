@@ -28,22 +28,4 @@ class MemberTest {
 		assertEquals("testNickName", findMember.getNickName());
 	}
 
-	/**
-	 * member 엔티티의 연관관계편의 메서드 테스트
-	 */
-	@Test
-	void testAddCategory() {
-		//given
-		Member member = Member.createMember("testId", "testPassword", "testNickName");
-		Category category = Category.createCategory("backend");
-
-		//when
-		member.addCategory(category);
-
-		//then
-		assertAll(
-			() -> assertEquals(category, member.getCategories().get(0)),
-			() -> assertEquals(member, category.getMember())
-		);
-	}
 }

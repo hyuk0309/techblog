@@ -45,10 +45,4 @@ public class Member {
 		return member;
 	}
 
-	/* 연관관계 편의 메서드 */
-	public void addCategory(Category category) {
-		categories.add(category);
-		category.setMember(this);
-	}
-
 }

@@ -30,13 +30,16 @@ public class Category {
 	protected Category (){
 	}
 
-	public static Category createCategory(String name) {
+	public static Category createCategory(Member member, String name) {
 		Category category = new Category();
+		category.setMember(member);
 		category.name = name;
 		return category;
 	}
 
-	protected void setMember(Member member) {
+	/* 연관관계 편의 메서드 */
+	private void setMember(Member member) {
 		this.member = member;
+		member.getCategories().add(this);
 	}
 }

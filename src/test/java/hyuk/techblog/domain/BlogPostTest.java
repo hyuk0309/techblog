@@ -33,11 +33,13 @@ class BlogPostTest {
 	@Test
 	void testAddCategory() {
 		//given
-		Category category = Category.createCategory("backend");
-		BlogPostCategory blogPostCategory = BlogPostCategory.createBlogPostCategory(category);
+		Member member = Member.createMember("testId", "testPw", "testName");
+		Category category = Category.createCategory(member, "backend");
+
 		BlogPost blogPost = BlogPost.createBlogPost(null, "www.naver.tech");
 
 		//when
+		BlogPostCategory blogPostCategory = BlogPostCategory.createBlogPostCategory(category);
 		blogPost.addBlogPostCategory(blogPostCategory);
 
 		//then
@@ -52,9 +54,11 @@ class BlogPostTest {
 		//given
 		//Test에 필요한 member, category 영속화
 		Member member = Member.createMember("testId", "testPw", "testName");
-		Category category = Category.createCategory("backend");
-		member.addCategory(category);
 		em.persist(member);
+
+		Member findMember = em.find(Member.class, member.getId());
+		Category category = Category.createCategory(findMember, "backend");
+		em.persist(category);
 
 		BlogPostCategory blogPostCategory = BlogPostCategory.createBlogPostCategory(category);
 		BlogPost blogPost = BlogPost.createBlogPost(member, "www.tech.blog", blogPostCategory);
