@@ -53,7 +53,7 @@ public class BlogPost {
 	}
 
 	/* 연관관계 편의 메서드 */
-	public void addCategory(BlogPostCategory blogPostCategory) {
+	public void addBlogPostCategory(BlogPostCategory blogPostCategory) {
 		blogPostCategories.add(blogPostCategory);
 		blogPostCategory.setBlogPost(this);
 	}
