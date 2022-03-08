@@ -27,6 +27,15 @@ public class Category {
 	@Column(nullable = false)
 	private String name;
 
+	protected Category (){
+	}
+
+	public static Category createCategory(String name) {
+		Category category = new Category();
+		category.name = name;
+		return category;
+	}
+
 	protected void setMember(Member member) {
 		this.member = member;
 	}
