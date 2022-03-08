@@ -4,11 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import javax.persistence.EntityManager;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
 
 @DataJpaTest
 class MemberTest {
@@ -47,6 +45,22 @@ class MemberTest {
 			() -> assertEquals(category, member.getCategories().get(0)),
 			() -> assertEquals(member, category.getMember())
 		);
+	}
+
+	@Test
+	void testCascade() {
+		//given
+		Member member = Member.createMember("testId", "testPassword", "testNickName");
+		Category category = Category.createCategory("backend");
+
+		member.addCategory(category);
+
+		//when
+		em.persist(member);
+
+		//then
+		assertNotNull(member.getId());
+		assertNotNull(category.getId());
 	}
 
 }
