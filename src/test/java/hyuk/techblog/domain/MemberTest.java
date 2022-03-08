@@ -46,21 +46,4 @@ class MemberTest {
 			() -> assertEquals(member, category.getMember())
 		);
 	}
-
-	@Test
-	void testCascade() {
-		//given
-		Member member = Member.createMember("testId", "testPassword", "testNickName");
-		Category category = Category.createCategory("backend");
-
-		member.addCategory(category);
-
-		//when
-		em.persist(member);
-
-		//then
-		assertNotNull(member.getId());
-		assertNotNull(category.getId());
-	}
-
 }

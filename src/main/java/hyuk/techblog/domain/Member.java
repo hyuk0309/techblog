@@ -31,10 +31,10 @@ public class Member {
 	@Column(nullable = false, unique = true)
 	private String nickName;
 
-	@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "member")
 	private List<Category> categories = new ArrayList<>();
 
-	protected Member(){
+	protected Member() {
 	}
 
 	public static Member createMember(String loginId, String password, String nickName) {
