@@ -56,9 +56,8 @@ class BlogPostTest {
 		member.addCategory(category);
 		em.persist(member);
 
-		BlogPost blogPost = BlogPost.createBlogPost(member, "www.tech.blog");
 		BlogPostCategory blogPostCategory = BlogPostCategory.createBlogPostCategory(category);
-		blogPost.addBlogPostCategory(blogPostCategory);
+		BlogPost blogPost = BlogPost.createBlogPost(member, "www.tech.blog", blogPostCategory);
 
 		//when
 		em.persist(blogPost);

@@ -45,10 +45,13 @@ public class BlogPost {
 	protected BlogPost (){
 	}
 
-	public static BlogPost createBlogPost(Member member, String url) {
+	public static BlogPost createBlogPost(Member member, String url, BlogPostCategory... blogPostCategories) {
 		BlogPost blogPost = new BlogPost();
 		blogPost.member = member;
 		blogPost.url = url;
+		for (BlogPostCategory blogPostCategory : blogPostCategories) {
+			blogPost.addBlogPostCategory(blogPostCategory);
+		}
 		return blogPost;
 	}
 
