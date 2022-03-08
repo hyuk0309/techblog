@@ -28,6 +28,15 @@ public class BlogPostCategory {
 	@JoinColumn(name = "category_id", nullable = false)
 	private Category category;
 
+	protected BlogPostCategory(){
+	}
+
+	public static BlogPostCategory createBlogPostCategory(Category category) {
+		BlogPostCategory blogPostCategory = new BlogPostCategory();
+		blogPostCategory.category = category;
+		return blogPostCategory;
+	}
+
 	protected void setBlogPost(BlogPost blogPost) {
 		this.blogPost = blogPost;
 	}

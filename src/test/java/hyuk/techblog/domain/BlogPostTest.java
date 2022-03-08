@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import javax.persistence.EntityManager;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -26,5 +27,22 @@ class BlogPostTest {
 
 		//then
 		assertNotNull(blogPost.getId());
+	}
+
+	@Test
+	void testAddCategory() {
+		//given
+		Category category = Category.createCategory("backend");
+		BlogPostCategory blogPostCategory = BlogPostCategory.createBlogPostCategory(category);
+		BlogPost blogPost = BlogPost.createBlogPost(null, "www.naver.tech");
+
+		//when
+		blogPost.addCategory(blogPostCategory);
+
+		//then
+		Assertions.assertAll(
+			() -> assertEquals(blogPostCategory, blogPost.getBlogPostCategories().get(0)),
+			() -> assertEquals(blogPost, blogPostCategory.getBlogPost())
+		);
 	}
 }
