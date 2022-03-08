@@ -20,4 +20,13 @@ public class Note {
 
 	@Lob
 	private String content;
+
+	protected Note() {
+	}
+
+	public static Note createNote(String content) {
+		Note note = new Note();
+		note.content = content;
+		return note;
+	}
 }
