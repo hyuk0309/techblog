@@ -42,6 +42,16 @@ public class BlogPost {
 	@OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL)
 	private List<BlogPostCategory> blogPostCategories = new ArrayList<>();
 
+	protected BlogPost (){
+	}
+
+	public static BlogPost createBlogPost(Member member, String url) {
+		BlogPost blogPost = new BlogPost();
+		blogPost.member = member;
+		blogPost.url = url;
+		return blogPost;
+	}
+
 	/* 연관관계 편의 메서드 */
 	public void addCategory(BlogPostCategory blogPostCategory) {
 		blogPostCategories.add(blogPostCategory);
