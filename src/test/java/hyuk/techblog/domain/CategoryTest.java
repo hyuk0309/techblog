@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import javax.persistence.EntityManager;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -46,6 +45,4 @@ class CategoryTest {
 		assertEquals(member, category.getMember());
 		assertEquals(category, member.getCategories().get(0));
 	}
-
-
 }
