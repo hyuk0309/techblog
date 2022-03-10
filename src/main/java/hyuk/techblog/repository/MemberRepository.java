@@ -37,4 +37,8 @@ public class MemberRepository {
 			.getResultList();
 	}
 
+	public Member findById(Long id) {
+		return em.find(Member.class, id);
+	}
+
 }
