@@ -56,7 +56,7 @@ public class MemberService {
 
 		List<Member> member = memberRepository.findByLoginId(loginId);
 
-		if (member == null) {
+		if (member.size() == 0) {
 			throw new NonExistLoginIdException();
 		}
 		if (!member.get(0).getPassword().equals(password)) { //회원가입 성공

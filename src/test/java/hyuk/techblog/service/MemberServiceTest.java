@@ -4,19 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import javax.persistence.EntityManager;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import hyuk.techblog.domain.Member;
 import hyuk.techblog.dto.member.MemberDto;
 import hyuk.techblog.exception.member.DuplicateLoginIdException;
 import hyuk.techblog.exception.member.DuplicateNickNameException;
+import hyuk.techblog.exception.member.InvalidPasswordException;
+import hyuk.techblog.exception.member.NonExistLoginIdException;
 import hyuk.techblog.repository.MemberRepository;
 
 @DataJpaTest
@@ -54,7 +53,7 @@ class MemberServiceTest {
 	}
 
 	/**
-	 * 아이디 중복
+	 * 회원가입 과정에서 아이디 중복
 	 */
 	@Test
 	void testDuplicateLoginId() {
@@ -74,7 +73,7 @@ class MemberServiceTest {
 	}
 
 	/**
-	 * 닉네임 중복
+	 * 회원가입 과정에서 닉네임 중복
 	 */
 	@Test
 	void testDuplicateNickName() {
@@ -93,4 +92,63 @@ class MemberServiceTest {
 		//then
 	}
 
+	/**
+	 * 정상 로그인
+	 */
+	@Test
+	void testSuccessLogin() {
+		//given
+		MemberDto memberDto1 = new MemberDto("testId1", "testPw1", "testNickName1");
+		memberService.join(memberDto1);
+
+		String loginId = "testId1";
+		String password = "testPw1";
+
+		//when
+		Long loginMemberId = memberService.login(loginId, password);
+
+		//then
+		Member findMember = memberRepository.findById(loginMemberId);
+		assertAll(
+			() -> assertEquals(findMember.getLoginId(), memberDto1.getLoginId()),
+			() -> assertEquals(findMember.getPassword(), memberDto1.getPassword()),
+			() -> assertEquals(findMember.getNickName(), memberDto1.getNickName())
+		);
+	}
+
+	/**
+	 * 로그인에서 존재하지 않는 아이디
+	 */
+	@Test
+	void testNoExistLoginId() {
+		//given
+		MemberDto memberDto1 = new MemberDto("testId1", "testPw1", "testNickName1");
+		memberService.join(memberDto1);
+
+		String loginId = "testId2";
+		String password = "testPw1";
+
+		//when
+		assertThrows(NonExistLoginIdException.class,
+			() -> memberService.login(loginId, password));
+		//then
+	}
+
+	/**
+	 * 로그인에서 비밀번호 틀림
+	 */
+	@Test
+	void testWrongPassword() {
+		//given
+		MemberDto memberDto1 = new MemberDto("testId1", "testPw1", "testNickName1");
+		memberService.join(memberDto1);
+
+		String loginId = "testId1";
+		String password = "testPw2";
+
+		//when
+		assertThrows(InvalidPasswordException.class,
+			() -> memberService.login(loginId, password));
+		//then
+	}
 }
