@@ -2,10 +2,15 @@ package hyuk.techblog.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import javax.persistence.EntityManager;
+
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
 import hyuk.techblog.domain.Member;
@@ -14,12 +19,18 @@ import hyuk.techblog.exception.member.DuplicateLoginIdException;
 import hyuk.techblog.exception.member.DuplicateNickNameException;
 import hyuk.techblog.repository.MemberRepository;
 
-@SpringBootTest
-@Transactional
+@DataJpaTest
 class MemberServiceTest {
 
-	@Autowired MemberRepository memberRepository;
-	@Autowired MemberService memberService;
+	@Autowired EntityManager em;
+	MemberService memberService;
+	MemberRepository memberRepository;
+
+	@BeforeEach
+	public void init() {
+		memberRepository = new MemberRepository(em);
+		memberService = new MemberService(memberRepository);
+	}
 
 	/**
 	 * 정상 회원가입
