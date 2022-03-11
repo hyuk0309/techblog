@@ -79,4 +79,12 @@ public class MemberService {
 		return member.getId();
 	}
 
+	/**
+	 * 회원 탈퇴
+	 */
+	@Transactional
+	public void removeMember(Long id) {
+		Member member = memberRepository.findById(id);
+		memberRepository.removeMember(member);
+	}
 }
