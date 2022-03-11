@@ -151,4 +151,42 @@ class MemberServiceTest {
 			() -> memberService.login(loginId, password));
 		//then
 	}
+
+	/**
+	 * 닉네임 변경
+	 */
+	@Test
+	void testUpdateNickName() {
+		//given
+		MemberDto memberDto1 = new MemberDto("testId1", "testPw1", "testNickName1");
+		Long saveId = memberService.join(memberDto1);
+
+		String nickName = "hyuk";
+
+		//when
+		memberService.updateNickName(saveId, nickName);
+
+		//then
+		assertEquals("hyuk", memberRepository.findById(saveId).getNickName());
+	}
+
+	/**
+	 * 중복된 닉네임으로 변경하는 경우
+	 */
+	@Test
+	void testDuplicateNickNameUpdate() {
+		//given
+		MemberDto memberDto1 = new MemberDto("testId1", "testPw1", "testNickName1");
+		Long saveId = memberService.join(memberDto1);
+
+		MemberDto memberDto2 = new MemberDto("testId2", "testPw2", "testNickName2");
+		memberService.join(memberDto2);
+
+		String nickName = memberDto2.getNickName();
+
+		//when
+		assertThrows(DuplicateNickNameException.class,
+			() -> memberService.updateNickName(saveId, nickName));
+		//then
+	}
 }
