@@ -189,4 +189,23 @@ class MemberServiceTest {
 			() -> memberService.updateNickName(saveId, nickName));
 		//then
 	}
+
+	/**
+	 * 회원 탈퇴
+	 */
+	@Test
+	void testRemoveMember() {
+		//given
+		MemberDto memberDto1 = new MemberDto("testId1", "testPw1", "testNickName1");
+		Long saveId = memberService.join(memberDto1);
+
+		//when
+		memberService.removeMember(saveId);
+
+		//then
+		em.flush();
+		em.clear();
+
+		assertNull(memberRepository.findById(saveId));
+	}
 }
