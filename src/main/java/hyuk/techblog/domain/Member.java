@@ -45,4 +45,8 @@ public class Member {
 		return member;
 	}
 
+	/* 비지니스 로직 */
+	public void changeNickName(String nickName) {
+		this.nickName = nickName;
+	}
 }

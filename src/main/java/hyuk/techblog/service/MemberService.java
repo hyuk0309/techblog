@@ -66,4 +66,17 @@ public class MemberService {
 		return member.get(0).getId();
 	}
 
+	/**
+	 * 닉네임 변경
+	 */
+	@Transactional
+	public Long updateNickName(Long id, String nickName) {
+
+		validateDuplicateNickName(nickName);
+
+		Member member = memberRepository.findById(id);
+		member.changeNickName(nickName);
+		return member.getId();
+	}
+
 }
