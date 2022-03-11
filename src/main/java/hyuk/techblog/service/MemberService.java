@@ -9,6 +9,8 @@ import hyuk.techblog.domain.Member;
 import hyuk.techblog.dto.member.MemberDto;
 import hyuk.techblog.exception.member.DuplicateLoginIdException;
 import hyuk.techblog.exception.member.DuplicateNickNameException;
+import hyuk.techblog.exception.member.InvalidPasswordException;
+import hyuk.techblog.exception.member.NonExistLoginIdException;
 import hyuk.techblog.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -45,6 +47,23 @@ public class MemberService {
 		if (members.size() > 0) {
 			throw new DuplicateNickNameException();
 		}
+	}
+
+	/**
+	 * 로그인
+	 */
+	public Long login(String loginId, String password) {
+
+		List<Member> member = memberRepository.findByLoginId(loginId);
+
+		if (member == null) {
+			throw new NonExistLoginIdException();
+		}
+		if (!member.get(0).getPassword().equals(password)) { //회원가입 성공
+			throw new InvalidPasswordException();
+		}
+
+		return member.get(0).getId();
 	}
 
 }
