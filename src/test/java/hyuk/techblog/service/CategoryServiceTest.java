@@ -1,8 +1,11 @@
 package hyuk.techblog.service;
 
+import static org.assertj.core.api.Assertions.*;
+
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import hyuk.techblog.domain.Category;
 import hyuk.techblog.domain.Member;
+import hyuk.techblog.dto.category.CategoryDTO;
 import hyuk.techblog.exception.category.DuplicateCategoryException;
 import hyuk.techblog.repository.CategoryRepository;
 import hyuk.techblog.repository.MemberRepository;
@@ -42,7 +46,7 @@ public class CategoryServiceTest {
 
 		//then
 		Category findCategory = em.find(Category.class, saveId);
-		Assertions.assertThat(findCategory.getId()).isEqualTo(saveId);
+		assertThat(findCategory.getId()).isEqualTo(saveId);
 	}
 
 	@DisplayName("카테고리 생성 - 중복 카테고리")
@@ -60,7 +64,7 @@ public class CategoryServiceTest {
 
 		//when
 		//then
-		Assertions.assertThatThrownBy(() -> categoryService.saveCategory(memberId, name))
+		assertThatThrownBy(() -> categoryService.saveCategory(memberId, name))
 			.isInstanceOf(DuplicateCategoryException.class);
 	}
 
@@ -82,7 +86,7 @@ public class CategoryServiceTest {
 
 		//then
 		Category updateCategory = em.find(Category.class, updateId);
-		Assertions.assertThat(updateCategory.getName()).isEqualTo(name);
+		assertThat(updateCategory.getName()).isEqualTo(name);
 	}
 
 	@DisplayName("카테고리 수정 - 이름 중복")
@@ -104,8 +108,28 @@ public class CategoryServiceTest {
 
 		//when
 		//then
-		Assertions.assertThatThrownBy(() -> categoryService.updateCategory(categoryId, name))
+		assertThatThrownBy(() -> categoryService.updateCategory(categoryId, name))
 			.isInstanceOf(DuplicateCategoryException.class);
+	}
+
+	@DisplayName("특정 회원 카테고리 전체 조회")
+	@Test
+	void findMemberCategories() {
+		//given
+		Member member = Member.createMember("testId", "testPw", "testName");
+		em.persist(member);
+
+		Category category1 = Category.createCategory(member, "back-end");
+		em.persist(category1);
+
+		Category category2 = Category.createCategory(member, "front-end");
+		em.persist(category2);
+
+		//when
+		List<CategoryDTO> categoryDTOList = categoryService.findMemberCategories(member.getId());
+
+		//then
+		assertThat(categoryDTOList.size()).isEqualTo(2);
 	}
 
 }

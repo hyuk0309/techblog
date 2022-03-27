@@ -34,4 +34,12 @@ public class CategoryRepository {
 		return em.find(Category.class, id);
 	}
 
+	public List<Category> findByMember(Member member) {
+		return em.createQuery(
+				"select c"
+					+ " from Category c"
+					+ " where c.member = :member", Category.class)
+			.setParameter("member", member)
+			.getResultList();
+	}
 }

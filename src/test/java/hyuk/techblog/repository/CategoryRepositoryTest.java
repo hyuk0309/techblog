@@ -82,4 +82,24 @@ public class CategoryRepositoryTest {
 		Assertions.assertThat(findCategory).isEqualTo(em.find(Category.class, findCategory.getId()));
 	}
 
+	@DisplayName("특정 회원의 category 전체 조회")
+	@Test
+	void findByMember() {
+		//given
+		Member member = Member.createMember("testId", "testPw", "testName");
+		em.persist(member);
+
+		Category category1 = Category.createCategory(member, "back-end");
+		em.persist(category1);
+
+		Category category2 = Category.createCategory(member, "front-end");
+		em.persist(category2);
+
+		//when
+		List<Category> categories = categoryRepository.findByMember(member);
+
+		//then
+		Assertions.assertThat(categories).contains(category1, category2);
+	}
+
 }

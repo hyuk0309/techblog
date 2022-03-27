@@ -1,12 +1,17 @@
 package hyuk.techblog.service;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import hyuk.techblog.domain.Category;
 import hyuk.techblog.domain.Member;
+import hyuk.techblog.dto.category.CategoryDTO;
+import hyuk.techblog.dto.member.MemberDto;
 import hyuk.techblog.exception.category.DuplicateCategoryException;
 import hyuk.techblog.repository.CategoryRepository;
 import hyuk.techblog.repository.MemberRepository;
@@ -20,6 +25,10 @@ public class CategoryService {
 	private final CategoryRepository categoryRepository;
 	private final MemberRepository memberRepository;
 
+	/**
+	 *	새로운 카테고리 저장
+	 */
+	@Transactional
 	public Long saveCategory(Long memberId, String name) {
 
 		Member member = memberRepository.findById(memberId);
@@ -32,10 +41,14 @@ public class CategoryService {
 		return category.getId();
 	}
 
+	/**
+	 *	카테고리 수정
+	 */
+	@Transactional
 	public Long updateCategory(Long categoryId, String name) {
 		Category category = categoryRepository.findById(categoryId);
 
-		if(category.getName().equals(name)) {
+		if (category.getName().equals(name)) {
 			return category.getId();
 		}
 
@@ -50,5 +63,14 @@ public class CategoryService {
 		if (categories.size() != 0) {
 			throw new DuplicateCategoryException();
 		}
+	}
+
+	/**
+	 *	특정 맴버 카테고리 전체 조회
+	 */
+	public List<CategoryDTO> findMemberCategories(Long memberId) {
+		return categoryRepository.findByMember(memberRepository.findById(memberId)).stream()
+			.map(c -> new CategoryDTO(c))
+			.collect(toList());
 	}
 }
