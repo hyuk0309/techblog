@@ -1,5 +1,7 @@
 package hyuk.techblog.repository;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import org.assertj.core.api.Assertions;
@@ -28,8 +30,17 @@ public class CategoryRepositoryTest {
 	@Test
 	void selectCategoryUsingMember_IdAndName() {
 		//given
+		Member member = Member.createMember("testId", "testPw", "testName");
+		em.persist(member);
+
+		Category category = Category.createCategory(member, "back-end");
+		categoryRepository.save(category);
+
 		//when
+		List<Category> categories = categoryRepository.findByMemberAndName(member, category.getName());
+
 		//then
+		Assertions.assertThat(categories.size()).isEqualTo(1);
 	}
 
 	@DisplayName("category 저장")
