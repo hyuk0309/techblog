@@ -42,4 +42,8 @@ public class CategoryRepository {
 			.setParameter("member", member)
 			.getResultList();
 	}
+
+	public void remove(Category category) {
+		em.remove(category);
+	}
 }

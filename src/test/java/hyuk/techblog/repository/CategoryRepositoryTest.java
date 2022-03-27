@@ -1,5 +1,7 @@
 package hyuk.techblog.repository;
 
+import static org.assertj.core.api.Assertions.*;
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -40,7 +42,7 @@ public class CategoryRepositoryTest {
 		List<Category> categories = categoryRepository.findByMemberAndName(member, category.getName());
 
 		//then
-		Assertions.assertThat(categories.size()).isEqualTo(1);
+		assertThat(categories.size()).isEqualTo(1);
 	}
 
 	@DisplayName("category 저장")
@@ -59,7 +61,7 @@ public class CategoryRepositoryTest {
 		em.flush(); //insert query 확인용
 
 		Category findCategory = em.find(Category.class, category.getId());
-		Assertions.assertThat(findCategory.getId()).isEqualTo(category.getId());
+		assertThat(findCategory.getId()).isEqualTo(category.getId());
 	}
 
 	@DisplayName("category id로 조회")
@@ -79,7 +81,7 @@ public class CategoryRepositoryTest {
 		Category findCategory = categoryRepository.findById(category.getId());
 
 		//then
-		Assertions.assertThat(findCategory).isEqualTo(em.find(Category.class, findCategory.getId()));
+		assertThat(findCategory).isEqualTo(em.find(Category.class, findCategory.getId()));
 	}
 
 	@DisplayName("특정 회원의 category 전체 조회")
@@ -99,7 +101,27 @@ public class CategoryRepositoryTest {
 		List<Category> categories = categoryRepository.findByMember(member);
 
 		//then
-		Assertions.assertThat(categories).contains(category1, category2);
+		assertThat(categories).contains(category1, category2);
+	}
+
+	@DisplayName("카테고리 삭제")
+	@Test
+	void remove() {
+		//given
+		Member member = Member.createMember("testId", "testPw", "testName");
+		em.persist(member);
+
+		Category category = Category.createCategory(member, "back-end");
+		em.persist(category);
+
+		//when
+		categoryRepository.remove(category);
+
+		em.flush();
+		em.clear();
+
+		//then
+		assertThat(em.find(Category.class, category.getId())).isNull();
 	}
 
 }

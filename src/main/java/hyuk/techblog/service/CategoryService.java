@@ -73,4 +73,12 @@ public class CategoryService {
 			.map(c -> new CategoryDTO(c))
 			.collect(toList());
 	}
+
+	/**
+	 *	카테고리 삭제
+	 */
+	@Transactional
+	public void removeCategory(Long id) {
+		categoryRepository.remove(categoryRepository.findById(id));
+	}
 }

@@ -132,4 +132,24 @@ public class CategoryServiceTest {
 		assertThat(categoryDTOList.size()).isEqualTo(2);
 	}
 
+	@DisplayName("카테고리 삭제")
+	@Test
+	void removeCategory() {
+		//given
+		Member member = Member.createMember("testId", "testPw", "testName");
+		em.persist(member);
+
+		Category category = Category.createCategory(member, "back-end");
+		em.persist(category);
+
+		//when
+		categoryService.removeCategory(category.getId());
+
+		em.flush();
+		em.clear();
+
+		//then
+		assertThat(em.find(Category.class, category.getId())).isNull();
+	}
+
 }
