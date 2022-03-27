@@ -32,6 +32,19 @@ public class CategoryService {
 		return category.getId();
 	}
 
+	public Long updateCategory(Long categoryId, String name) {
+		Category category = categoryRepository.findById(categoryId);
+
+		if(category.getName().equals(name)) {
+			return category.getId();
+		}
+
+		validateDuplicateCategory(category.getMember(), name);
+
+		category.changeName(name);
+		return category.getId();
+	}
+
 	private void validateDuplicateCategory(Member member, String name) {
 		List<Category> categories = categoryRepository.findByMemberAndName(member, name);
 		if (categories.size() != 0) {

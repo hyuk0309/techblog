@@ -42,4 +42,9 @@ public class Category {
 		this.member = member;
 		member.getCategories().add(this);
 	}
+
+	/* 비지니스 로직 */
+	public void changeName(String name) {
+		this.name = name;
+	}
 }

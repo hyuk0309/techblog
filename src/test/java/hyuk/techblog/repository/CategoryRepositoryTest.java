@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
 
 import hyuk.techblog.domain.Category;
 import hyuk.techblog.domain.Member;
@@ -18,7 +17,8 @@ import hyuk.techblog.domain.Member;
 @DataJpaTest
 public class CategoryRepositoryTest {
 
-	@Autowired EntityManager em;
+	@Autowired
+	EntityManager em;
 	CategoryRepository categoryRepository;
 
 	@BeforeEach
@@ -60,6 +60,26 @@ public class CategoryRepositoryTest {
 
 		Category findCategory = em.find(Category.class, category.getId());
 		Assertions.assertThat(findCategory.getId()).isEqualTo(category.getId());
+	}
+
+	@DisplayName("category id로 조회")
+	@Test
+	void findById() {
+		//given
+		Member member = Member.createMember("testId", "testPw", "testName");
+		em.persist(member);
+
+		Category category = Category.createCategory(member, "back-end");
+		em.persist(category);
+
+		em.flush();
+		em.clear();
+
+		//when
+		Category findCategory = categoryRepository.findById(category.getId());
+
+		//then
+		Assertions.assertThat(findCategory).isEqualTo(em.find(Category.class, findCategory.getId()));
 	}
 
 }

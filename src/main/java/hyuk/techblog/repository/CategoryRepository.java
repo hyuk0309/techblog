@@ -29,4 +29,9 @@ public class CategoryRepository {
 			.setParameter("name", name)
 			.getResultList();
 	}
+
+	public Category findById(Long id) {
+		return em.find(Category.class, id);
+	}
+
 }

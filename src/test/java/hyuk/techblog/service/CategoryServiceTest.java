@@ -64,4 +64,48 @@ public class CategoryServiceTest {
 			.isInstanceOf(DuplicateCategoryException.class);
 	}
 
+	@DisplayName("카테고리 수정 - 정상")
+	@Test
+	void updateCategory() {
+		//given
+		Member member = Member.createMember("testId", "testPw", "testName");
+		em.persist(member);
+
+		Category category = Category.createCategory(member, "back-end");
+		em.persist(category);
+
+		Long categoryId = category.getId();
+		String name = "front-end";
+
+		//when
+		Long updateId = categoryService.updateCategory(categoryId, name);
+
+		//then
+		Category updateCategory = em.find(Category.class, updateId);
+		Assertions.assertThat(updateCategory.getName()).isEqualTo(name);
+	}
+
+	@DisplayName("카테고리 수정 - 이름 중복")
+	@Test
+	void updateDuplicate() {
+		//given
+		Member member = Member.createMember("testId", "testPw", "testName");
+		em.persist(member);
+
+		Category category1 = Category.createCategory(member, "back-end");
+		em.persist(category1);
+
+		Category category2 = Category.createCategory(member, "front-end");
+		em.persist(category2);
+
+		//"back-end" -> "front-end" 변경 => 예외 발생
+		Long categoryId = category1.getId();
+		String name = "front-end";
+
+		//when
+		//then
+		Assertions.assertThatThrownBy(() -> categoryService.updateCategory(categoryId, name))
+			.isInstanceOf(DuplicateCategoryException.class);
+	}
+
 }
