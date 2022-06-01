@@ -14,8 +14,9 @@ import lombok.Getter;
 @Getter
 public class Note {
 
-	@Id @GeneratedValue
-	@Column(name = "note_id")
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
 	private Long id;
 
 	@Lob

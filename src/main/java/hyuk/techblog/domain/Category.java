@@ -16,8 +16,9 @@ import lombok.Getter;
 @Getter
 public class Category {
 
-	@Id @GeneratedValue
-	@Column(name = "category_id")
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -27,7 +28,7 @@ public class Category {
 	@Column(nullable = false)
 	private String name;
 
-	protected Category (){
+	protected Category() {
 	}
 
 	public static Category createCategory(Member member, String name) {

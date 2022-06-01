@@ -22,8 +22,9 @@ import lombok.Getter;
 @Getter
 public class BlogPost {
 
-	@Id @GeneratedValue
-	@Column(name = "blog_post_id")
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -42,7 +43,7 @@ public class BlogPost {
 	@OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL)
 	private List<BlogPostCategory> blogPostCategories = new ArrayList<>();
 
-	protected BlogPost (){
+	protected BlogPost() {
 	}
 
 	public static BlogPost createBlogPost(Member member, String url, BlogPostCategory... blogPostCategories) {
