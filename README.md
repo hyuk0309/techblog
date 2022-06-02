@@ -55,3 +55,7 @@ Spring MVC, JPA 를 이용한 토이 프로젝트입니다.
             test : 테스트 코드 수정에 대한 커밋
         }
         ~~~
+
+### To do
+- [ ] CategoryService 에서 MemberRepositoryImp 의존성 제거
+- [ ] Member 도메인 Controller 기능 개발
