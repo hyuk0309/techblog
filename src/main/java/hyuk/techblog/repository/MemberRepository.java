@@ -1,48 +1,19 @@
 package hyuk.techblog.repository;
 
-import java.util.List;
+import java.util.Optional;
 
-import javax.persistence.EntityManager;
-
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import hyuk.techblog.domain.Member;
-import lombok.RequiredArgsConstructor;
 
-@Repository
-@RequiredArgsConstructor
-public class MemberRepository {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
-	private final EntityManager em;
+	Optional<Member> findByLoginId(String loginId);
 
-	public void save(Member member) {
-		em.persist(member);
-	}
+	Optional<Member> findByNickName(String nickName);
 
-	public List<Member> findByLoginId(String loginId) {
-		return em.createQuery(
-				"select m"
-					+ " from Member m"
-					+ " where m.loginId = :loginId", Member.class)
-			.setParameter("loginId", loginId)
-			.getResultList();
-	}
+	Optional<Member> findByLoginIdAndPassword(String loginId, String password);
 
-	public List<Member> findByNickName(String nickName) {
-		return em.createQuery(
-				"select m"
-					+ " from Member m"
-					+ " where m.nickName = :nickName", Member.class)
-			.setParameter("nickName", nickName)
-			.getResultList();
-	}
-
-	public Member findById(Long id) {
-		return em.find(Member.class, id);
-	}
-
-	public void removeMember(Member member) {
-		em.remove(member);
-	}
-
+	Optional<Member> findById(Long id);
 }
+

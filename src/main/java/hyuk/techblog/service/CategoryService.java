@@ -3,7 +3,6 @@ package hyuk.techblog.service;
 import static java.util.stream.Collectors.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,10 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import hyuk.techblog.domain.Category;
 import hyuk.techblog.domain.Member;
 import hyuk.techblog.dto.category.CategoryDTO;
-import hyuk.techblog.dto.member.MemberDto;
 import hyuk.techblog.exception.category.DuplicateCategoryException;
 import hyuk.techblog.repository.CategoryRepository;
-import hyuk.techblog.repository.MemberRepository;
+import hyuk.techblog.repository.MemberRepositoryImp;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -23,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class CategoryService {
 
 	private final CategoryRepository categoryRepository;
-	private final MemberRepository memberRepository;
+	private final MemberRepositoryImp memberRepository;
 
 	/**
 	 *	새로운 카테고리 저장

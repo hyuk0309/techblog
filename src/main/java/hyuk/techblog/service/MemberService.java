@@ -1,6 +1,6 @@
 package hyuk.techblog.service;
 
-import java.util.List;
+import static hyuk.techblog.exception.Message.*;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,8 +9,8 @@ import hyuk.techblog.domain.Member;
 import hyuk.techblog.dto.member.MemberDto;
 import hyuk.techblog.exception.member.DuplicateLoginIdException;
 import hyuk.techblog.exception.member.DuplicateNickNameException;
-import hyuk.techblog.exception.member.InvalidPasswordException;
-import hyuk.techblog.exception.member.NonExistLoginIdException;
+import hyuk.techblog.exception.member.InvalidIdException;
+import hyuk.techblog.exception.member.InvalidLoginIdOrPassword;
 import hyuk.techblog.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -22,69 +22,69 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 
 	/**
-	 * 회원 가입
+	 * 회원 가입 API
+	 * @param memberDto
+	 * @return id
 	 */
 	@Transactional
 	public Long join(MemberDto memberDto) {
-
 		validateDuplicateLoginId(memberDto.getLoginId());
 		validateDuplicateNickName(memberDto.getNickName());
 
 		Member member = Member.createMember(memberDto.getLoginId(), memberDto.getPassword(), memberDto.getNickName());
-		memberRepository.save(member);
-		return member.getId();
+		Member savedMember = memberRepository.save(member);
+		return savedMember.getId();
 	}
 
 	private void validateDuplicateLoginId(String loginId) {
-		List<Member> members = memberRepository.findByLoginId(loginId);
-		if (members.size() > 0) {
-			throw new DuplicateLoginIdException();
-		}
-	}
-
-	private void validateDuplicateNickName(String nickName) {
-		List<Member> members = memberRepository.findByNickName(nickName);
-		if (members.size() > 0) {
-			throw new DuplicateNickNameException();
-		}
+		memberRepository.findByLoginId(loginId)
+			.ifPresent(member -> {
+				throw new DuplicateLoginIdException(DUPLICATE_LOGIN_ID_EXP_MSG);
+			});
 	}
 
 	/**
-	 * 로그인
+	 * 로그인 API
+	 * @param loginId
+	 * @param password
+	 * @return id
 	 */
 	public Long login(String loginId, String password) {
-
-		List<Member> member = memberRepository.findByLoginId(loginId);
-
-		if (member.size() == 0) {
-			throw new NonExistLoginIdException();
-		}
-		if (!member.get(0).getPassword().equals(password)) { //회원가입 성공
-			throw new InvalidPasswordException();
-		}
-
-		return member.get(0).getId();
-	}
-
-	/**
-	 * 닉네임 변경
-	 */
-	@Transactional
-	public Long updateNickName(Long id, String nickName) {
-
-		validateDuplicateNickName(nickName);
-
-		Member member = memberRepository.findById(id);
-		member.changeNickName(nickName);
+		Member member = memberRepository.findByLoginIdAndPassword(loginId, password)
+			.orElseThrow(() -> new InvalidLoginIdOrPassword(INVALID_LOGIN_ID_OR_PASSWORD_EXP_MSG));
 		return member.getId();
 	}
 
 	/**
-	 * 회원 탈퇴
+	 * 닉네임 변경 API
+	 * @param id
+	 * @param updateNickName
+	 * @return id
+	 */
+	@Transactional
+	public Long updateNickName(Long id, String updateNickName) {
+		validateDuplicateNickName(updateNickName);
+
+		Member member = memberRepository.findById(id)
+			.orElseThrow(() -> new InvalidIdException(INVALID_ID_EXP_MSG));
+
+		member.changeNickName(updateNickName);
+		return member.getId();
+	}
+
+	/**
+	 * 회원 탈퇴 API
+	 * @param id
 	 */
 	@Transactional
 	public void removeMember(Long id) {
-		Member member = memberRepository.findById(id);
-		memberRepository.removeMember(member);
+		memberRepository.deleteById(id);
+	}
+
+	private void validateDuplicateNickName(String nickName) {
+		memberRepository.findByNickName(nickName)
+			.ifPresent(member -> {
+				throw new DuplicateNickNameException(DUPLICATE_NICK_NAME_EXP_MSG);
+			});
 	}
 }

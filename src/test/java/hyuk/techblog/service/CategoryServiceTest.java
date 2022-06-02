@@ -17,7 +17,7 @@ import hyuk.techblog.domain.Member;
 import hyuk.techblog.dto.category.CategoryDTO;
 import hyuk.techblog.exception.category.DuplicateCategoryException;
 import hyuk.techblog.repository.CategoryRepository;
-import hyuk.techblog.repository.MemberRepository;
+import hyuk.techblog.repository.MemberRepositoryImp;
 
 @DataJpaTest
 public class CategoryServiceTest {
@@ -28,7 +28,7 @@ public class CategoryServiceTest {
 
 	@BeforeEach
 	public void init() {
-		categoryService = new CategoryService(new CategoryRepository(em), new MemberRepository(em));
+		categoryService = new CategoryService(new CategoryRepository(em), new MemberRepositoryImp(em));
 	}
 
 	@DisplayName("카테고리 생성 - 정상 동작")
