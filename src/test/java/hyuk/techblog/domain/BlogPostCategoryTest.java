@@ -1,7 +1,5 @@
 package hyuk.techblog.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 class BlogPostCategoryTest {
 
-	@Autowired EntityManager em;
+	@Autowired
+	EntityManager em;
 
 	@Test
 	void testPersist() {
@@ -36,7 +35,8 @@ class BlogPostCategoryTest {
 		//when
 		BlogPost findBlogPost = em.find(BlogPost.class, blogPost.getId());
 
-		BlogPostCategory blogPostCategory = BlogPostCategory.createBlogPostCategory(em.find(Category.class, category.getId()));
+		BlogPostCategory blogPostCategory = BlogPostCategory.createBlogPostCategory(
+			em.find(Category.class, category.getId()));
 		findBlogPost.addBlogPostCategory(blogPostCategory);
 		em.persist(blogPostCategory);
 

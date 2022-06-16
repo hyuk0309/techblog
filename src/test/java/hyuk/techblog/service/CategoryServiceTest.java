@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import hyuk.techblog.domain.Category;
 import hyuk.techblog.domain.Member;
-import hyuk.techblog.dto.category.CategoryDTO;
+import hyuk.techblog.dto.category.CategoryDto;
 import hyuk.techblog.exception.category.DuplicateCategoryException;
 import hyuk.techblog.repository.CategoryRepository;
 import hyuk.techblog.repository.MemberRepositoryImp;
@@ -126,10 +126,10 @@ public class CategoryServiceTest {
 		em.persist(category2);
 
 		//when
-		List<CategoryDTO> categoryDTOList = categoryService.findMemberCategories(member.getId());
+		List<CategoryDto> categoryDtoList = categoryService.findMemberCategories(member.getId());
 
 		//then
-		assertThat(categoryDTOList.size()).isEqualTo(2);
+		assertThat(categoryDtoList).hasSize(2);
 	}
 
 	@DisplayName("카테고리 삭제")

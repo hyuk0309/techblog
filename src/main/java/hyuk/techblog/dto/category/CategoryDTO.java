@@ -2,11 +2,11 @@ package hyuk.techblog.dto.category;
 
 import hyuk.techblog.domain.Category;
 
-public class CategoryDTO {
+public class CategoryDto {
 
 	private String categoryName;
 
-	public CategoryDTO(Category category) {
+	public CategoryDto(Category category) {
 		this.categoryName = category.getName();
 	}
 }

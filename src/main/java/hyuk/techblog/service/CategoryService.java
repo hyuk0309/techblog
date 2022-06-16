@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import hyuk.techblog.domain.Category;
 import hyuk.techblog.domain.Member;
-import hyuk.techblog.dto.category.CategoryDTO;
+import hyuk.techblog.dto.category.CategoryDto;
 import hyuk.techblog.exception.category.DuplicateCategoryException;
 import hyuk.techblog.repository.CategoryRepository;
 import hyuk.techblog.repository.MemberRepositoryImp;
@@ -66,9 +66,9 @@ public class CategoryService {
 	/**
 	 *	특정 맴버 카테고리 전체 조회
 	 */
-	public List<CategoryDTO> findMemberCategories(Long memberId) {
+	public List<CategoryDto> findMemberCategories(Long memberId) {
 		return categoryRepository.findByMember(memberRepository.findById(memberId)).stream()
-			.map(c -> new CategoryDTO(c))
+			.map(c -> new CategoryDto(c))
 			.collect(toList());
 	}
 
