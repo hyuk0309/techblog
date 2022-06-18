@@ -6,5 +6,11 @@ spring:
       hibernate:
         format_sql: true
 
+jwt:
+  header: token
+  issuer: issuer
+  client-secret: EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ
+  expiry-seconds: 60
+
 logging.level:
   org.hibernate.type : trace
