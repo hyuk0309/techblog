@@ -19,6 +19,6 @@ class JwtConfigureTest {
 		assertThat(jwtConfigure.getIssuer()).isEqualTo("issuer");
 		assertThat(jwtConfigure.getClientSecret()).isEqualTo(
 			"EENY5W0eegTf1naQB2eDeyCLl5kRS2b8xa5c4qLdS0hmVjtbvo8tOyhPMcAmtPuQ");
-		assertThat(jwtConfigure.getExpirySeconds()).isEqualTo(60);
+		assertThat(jwtConfigure.getExpirySeconds()).isEqualTo(600);
 	}
 }

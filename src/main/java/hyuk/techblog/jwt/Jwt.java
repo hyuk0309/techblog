@@ -1,4 +1,4 @@
-package hyuk.techblog.user;
+package hyuk.techblog.jwt;
 
 import java.util.Arrays;
 import java.util.Date;
